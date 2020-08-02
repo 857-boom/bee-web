@@ -12,28 +12,7 @@
       <h3 class="title">统一门户平台</h3>
     </header>
     <div class="tab-container">
-      <a-form :form="form" class="login-form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-        <a-form-item label="用户名">
-          <a-input
-            placeholder="请输入工号"
-            size="large"
-            v-decorator="['account', { rules: [{ required: true, message: '请输入工号' }] }]"
-          />
-        </a-form-item>
-        <a-form-item>
-          <label slot="label">密&nbsp;&nbsp;&nbsp;码</label>
-          <a-input-password
-            placeholder="请输入密码"
-            size="large"
-            v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }] }]"
-          />
-        </a-form-item>
-        <a-form-item :wrapper-col="{ span: 23 }">
-          <a-button type="primary" html-type="submit" size="large" block>
-            登录
-          </a-button>
-        </a-form-item>
-      </a-form>
+      <password/>
     </div>
     <p class="t_a-c">登录时若有疑问，请钉钉联系产品经理</p>
     <p class="t_a-c">
@@ -43,11 +22,14 @@
 </template>
 
 <script>
+import Password from './components/password'
 export default {
   name: 'Login',
+  components: {
+    Password
+  },
   data () {
     return {
-      form: this.$form.createForm(this, { name: 'login_form' }),
       switched: false
     }
   },
