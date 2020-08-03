@@ -13,6 +13,7 @@
     </header>
     <div class="tab-container">
       <password/>
+      <qr-code/>
     </div>
     <p class="t_a-c">登录时若有疑问，请钉钉联系产品经理</p>
     <p class="t_a-c">
@@ -23,10 +24,12 @@
 
 <script>
 import Password from './components/password'
+import QrCode from './components/qr-code'
 export default {
   name: 'Login',
   components: {
-    Password
+    Password,
+    QrCode
   },
   data () {
     return {
