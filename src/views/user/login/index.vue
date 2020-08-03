@@ -12,8 +12,8 @@
       <h3 class="title">统一门户平台</h3>
     </header>
     <div class="tab-container">
-      <password/>
-      <qr-code/>
+      <!--      <password/>-->
+      <qr-code ref="qrCode"/>
     </div>
     <p class="t_a-c">登录时若有疑问，请钉钉联系产品经理</p>
     <p class="t_a-c">
@@ -39,6 +39,7 @@ export default {
   methods: {
     switchLoginStyle () {
       this.switched = true
+      this.$refs.qrCode.login()
     }
   }
 
