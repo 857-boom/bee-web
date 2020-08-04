@@ -6,6 +6,7 @@ import store from './store'
 // import '@/components/NProgress/nprogress.less' // progress bar custom style
 
 import './core/lazy_use'
+import './global.less'
 Vue.config.productionTip = false
 
 new Vue({
