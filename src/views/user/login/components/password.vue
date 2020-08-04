@@ -15,7 +15,7 @@
         v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }] }]"
       />
     </a-form-item>
-    <a-form-item :wrapper-col="{ span: 23 }">
+    <a-form-item :wrapper-col="{ span: 22, offset: 1 }">
       <a-button type="primary" html-type="submit" size="large" block>
         登录
       </a-button>
