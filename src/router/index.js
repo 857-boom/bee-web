@@ -14,6 +14,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/forget-password',
+      name: 'forgetPassword',
+      component: () => import('@/views/user/forgetPassword')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

@@ -17,7 +17,7 @@
     </div>
     <p class="login-tips">登录时若有疑问，请联系产品经理</p>
     <p class="login-tips concat" v-if="loginType === 'pwd'" >
-      <a id="forget-password" target="_blank" href="/password-forget.html">忘记密码？</a>
+      <router-link target="_blank" :to="{ name: 'forgetPassword' }">忘记密码？</router-link>
     </p>
   </section>
 </template>
