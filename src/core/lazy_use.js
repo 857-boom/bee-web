@@ -7,7 +7,9 @@ import {
   Form,
   Card,
   Steps,
-  Icon
+  Icon,
+  Alert,
+  Result
 } from 'ant-design-vue'
 
 Vue.use(Input)
@@ -17,5 +19,7 @@ Vue.use(Form)
 Vue.use(Card)
 Vue.use(Steps)
 Vue.use(Icon)
+Vue.use(Alert)
+Vue.use(Result)
 
 process.env.NODE_ENV !== 'production' && console.warn('NOTICE: use lazy-load.')
