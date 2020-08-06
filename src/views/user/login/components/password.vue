@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form" class="login-form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+  <a-form :form="form" class="login-form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }" @submit="handleSubmit">
     <a-form-item label="用户名">
       <a-input
         placeholder="请输入工号"
@@ -30,6 +30,16 @@ export default {
     return {
       form: this.$form.createForm(this, { name: 'login_form' }),
       switched: false
+    }
+  },
+  methods: {
+    handleSubmit (e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+        }
+      })
     }
   }
 }
