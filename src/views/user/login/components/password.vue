@@ -1,21 +1,24 @@
 <template>
-  <a-form :form="form" class="login-form" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }" @submit="handleSubmit">
-    <a-form-item label="用户名">
+  <a-form :form="form" class="login-form" :wrapper-col="{ span: 20, offset: 2 }" @submit="handleSubmit">
+    <a-form-item>
       <a-input
         placeholder="请输入工号"
         size="large"
         v-decorator="['account', { rules: [{ required: true, message: '请输入工号' }] }]"
-      />
+      >
+        <a-icon slot="prefix" type="user" />
+      </a-input>
     </a-form-item>
     <a-form-item>
-      <label slot="label">密&nbsp;&nbsp;&nbsp;码</label>
       <a-input-password
         placeholder="请输入密码"
         size="large"
         v-decorator="['password', { rules: [{ required: true, message: '请输入密码' }] }]"
-      />
+      >
+        <a-icon slot="prefix" type="lock" />
+      </a-input-password>
     </a-form-item>
-    <a-form-item :wrapper-col="{ span: 22, offset: 1 }">
+    <a-form-item>
       <a-button type="primary" html-type="submit" size="large" block>
         登录
       </a-button>
