@@ -28,6 +28,21 @@ export const asyncRouterMap = [
             meta: { title: '工作台', keepAlive: true, permission: [ 'dashboard' ] }
           }
         ]
+      },
+      {
+        path: '/admin/system',
+        name: 'system',
+        redirect: '/admin/system/dict',
+        component: RouteView,
+        meta: { title: '系统管理', keepAlive: true, permission: [ 'dashboard' ] },
+        children: [
+          {
+            path: '/admin/system/dict',
+            name: 'dict',
+            component: () => import('@/views/admin/system/dictionary/index'),
+            meta: { title: '系统字典', keepAlive: true, permission: [ 'dashboard' ] }
+          }
+        ]
       }
     ]
   },
