@@ -1,30 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../views/user/login'
+import { constantRouterMap } from '@/config/router.config'
+
+// hack router push callback
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/forget-password',
-      name: 'forgetPassword',
-      component: () => import('@/views/user/forgetPassword')
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
-  ]
+  routes: constantRouterMap
 })

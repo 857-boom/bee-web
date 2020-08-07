@@ -31,14 +31,14 @@ const vueConfig = {
       less: {
         lessOptions: {
           modifyVars: {
-            'primary-color': '#FE741A',
+            'primary-color': '#FE741A'
           },
           // DO NOT REMOVE THIS LINE
-          javascriptEnabled: true,
-        },
+          javascriptEnabled: true
+        }
       }
     }
-  },
+  }
 }
 
 module.exports = vueConfig
