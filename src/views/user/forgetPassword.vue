@@ -34,21 +34,21 @@
           >
             <a-input
               :placeholder="'请输入' + validateTypeName"
-              v-decorator="['name', { rules: [{required: true, message: '请输入' + validateTypeName }, {validator: validate}] }]"/>
+              v-decorator="['channel', { rules: [{required: true, message: '请输入' + validateTypeName }, {validator: validate}] }]"/>
           </a-form-item>
           <a-form-item
             label="验证码"
             :labelCol="{ lg: { span: 5 }, sm: { span: 5 } }"
             :wrapperCol="{ lg: { span: 19 }, sm: { span: 19 } }"
           >
-            <a-input
+            <a-input-search
               placeholder="请输入验证码"
-              v-decorator="['captcha', { rules: [{required: true, message: '请输入验证码'}] }]">
-              <a-icon slot="addonAfter" type="setting" />
-            </a-input>
+              v-decorator="['captcha', { rules: [{required: true, message: '请输入验证码'}] }]"
+              :enter-button="!captcha.send ? captcha.enterButton : captcha.time"
+              @search="sendCaptcha" />
           </a-form-item>
           <a-form-item
-            :wrapperCol="{ lg: { span: 5 }, sm: { span: 19 }, offset: 20 }"
+            :wrapperCol="{ lg: { span: 5 }, sm: { span: 19 }, offset: 21 }"
           >
             <a-button type="primary" html-type="submit">
               确定
@@ -64,7 +64,7 @@
         >
           <span slot="description">
             <P>* 长度：6-20，不能输入空格</P>
-            <P>* 需包含字母、数字、特殊字符中的两种及以上</P>
+            <P>* 需包含大小写 字母、数字、特称字符，至少8个字符</P>
             <P>* 不能使用系统分配的初始默认密码</P>
           </span>
         </a-alert>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { testPhone, testEmail } from '@/utils/validate'
+import { testPhone, testEmail, testPassword } from '@/utils/validate'
 const VALIDATE_TYPE = {
   PHONE: {
     name: '手机号码'
@@ -122,7 +122,12 @@ export default {
       currentTab: 0,
       sendCaptchaForm: this.$form.createForm(this, { name: 'sendCaptchaForm' }),
       passwordForm: this.$form.createForm(this, { name: 'passwordForm' }),
-      validateTypeName: VALIDATE_TYPE.PHONE.name
+      validateTypeName: VALIDATE_TYPE.PHONE.name,
+      captcha: {
+        enterButton: '发送验证码',
+        time: 60,
+        send: false
+      }
     }
   },
   methods: {
@@ -159,6 +164,33 @@ export default {
         }
       })
     },
+    sendCaptcha () {
+      if (this.captcha.send) {
+        return
+      }
+      this.sendCaptchaForm.validateFields(['username', 'channel'], { force: true }, (err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.captcha.time = 60
+          this.captcha.send = true
+          this.countDown()
+        }
+      })
+    },
+    countDown () {
+      if (this.captchaTimer) {
+        clearTimeout(this.captchaTimer)
+      }
+      this.captchaTimer = setTimeout(() => {
+        this.captcha.time -= 1
+        if (this.captcha.time < 0) {
+          this.captcha.send = false
+          clearTimeout(this.captchaTimer)
+        } else {
+          this.countDown()
+        }
+      }, 1000)
+    },
     validate (rule, value, callback) {
       if (typeof (value) === 'undefined' || value === '') {
         callback()
@@ -177,15 +209,15 @@ export default {
       }
     },
     validatePassword (rule, value, callback) {
-      if (value.length < 6) {
-        return callback(new Error('密码不能小于6位'))
+      if (!testPassword(value)) {
+        return callback(new Error('必须包含大小写 字母、数字、特称字符，至少8个字符'))
       } else {
         callback()
       }
     },
     validatePassRepeat (rule, value, callback) {
-      if (value.length < 6) {
-        return callback(new Error('密码不能小于6位'))
+      if (!testPassword(value)) {
+        return callback(new Error('必须包含大小写 字母、数字、特称字符，至少8个字符'))
       } else {
         const pwd = this.passwordForm.getFieldValue('password')
         if (pwd !== value) {
