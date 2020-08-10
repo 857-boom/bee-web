@@ -11,6 +11,7 @@ import './mock'
 
 import './core/lazy_use'
 import './permission' // permission control
+import './utils/filter'
 import './global.less'
 Vue.config.productionTip = false
 

@@ -10,6 +10,10 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   console.log('mock mounting')
   const Mock = require('mockjs2')
   require('./services/user')
+  require('./services/system/dictionary')
+  require('./services/system/background')
+  require('./services/application/config')
+  require('./services/org/employee')
 
   Mock.setup({
     timeout: 800 // setter delay time
