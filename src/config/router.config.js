@@ -68,7 +68,7 @@ export const asyncRouterMap = [
       {
         path: '/admin/system',
         name: 'system',
-        redirect: '/admin/system',
+        redirect: '/admin/system/dictionary',
         component: RouteView,
         meta: { title: '系统管理', keepAlive: true, permission: [ 'dashboard' ] },
         children: [
