@@ -1,41 +1,41 @@
 import request from '@/utils/request'
 
-export function pageDict (parameter) {
+export function pageApplication (parameter) {
   return request({
-    url: '/system/dictionaries',
+    url: '/applications',
     method: 'get',
     params: parameter
   })
 }
 
-export function addDict (parameter) {
+export function addApplication (parameter) {
   return request({
-    url: '/system/dictionaries',
+    url: '/applications',
     method: 'post',
     data: parameter
   })
 }
 
-export function modifyDict (parameter) {
+export function modifyApplication (parameter) {
   return request({
-    url: '/system/dictionaries/' + parameter.id,
+    url: '/applications/' + parameter.id,
     method: 'put',
     data: parameter
   })
 }
 
-export function removeDict (id) {
+export function removeApplication (id) {
   return request({
     showLoading: true,
-    url: '/system/dictionaries/' + id,
+    url: '/applications/' + id,
     method: 'delete'
   })
 }
 
-export function batchRemoveDict (parameter) {
+export function batchRemoveApplication (parameter) {
   return request({
     showLoading: true,
-    url: '/system/dictionaries/batch',
+    url: '/applications/batch',
     method: 'post',
     data: parameter
   })

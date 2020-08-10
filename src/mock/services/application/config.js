@@ -18,11 +18,10 @@ const serverList = (options) => {
     result.push({
       key: tmpKey,
       id: tmpKey,
-      code: 'No ' + tmpKey,
       name: 'name',
-      value: tmpKey,
-      sort: 0,
-      description: '这是一段描述'
+      uri: 'http://uri',
+      type: Mock.mock('@integer(1, 2)'),
+      enabled: Mock.mock('@integer(0, 1)')
     })
   }
 
@@ -39,8 +38,8 @@ export const empty = req => {
   return builder({})
 }
 
-Mock.mock(/\/system\/dictionaries/, 'get', serverList)
-Mock.mock(/\/system\/dictionaries/, 'post', serverList)
-Mock.mock(/\/system\/dictionaries\/1/, 'put', empty)
-Mock.mock(/\/system\/dictionaries/, 'delete', empty)
-Mock.mock(/\/system\/dictionaries\/batch/, 'post', empty)
+Mock.mock(/\/applications/, 'get', serverList)
+Mock.mock(/\/applications/, 'post', serverList)
+Mock.mock(/\/applications\/1/, 'put', empty)
+Mock.mock(/\/applications/, 'delete', empty)
+Mock.mock(/\/applications\/batch/, 'post', empty)

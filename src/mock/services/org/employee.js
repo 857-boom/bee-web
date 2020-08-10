@@ -18,11 +18,8 @@ const serverList = (options) => {
     result.push({
       key: tmpKey,
       id: tmpKey,
-      code: 'No ' + tmpKey,
       name: 'name',
-      value: tmpKey,
-      sort: 0,
-      description: '这是一段描述'
+      jobNumber: 'jobNumber'
     })
   }
 
@@ -39,8 +36,4 @@ export const empty = req => {
   return builder({})
 }
 
-Mock.mock(/\/system\/dictionaries/, 'get', serverList)
-Mock.mock(/\/system\/dictionaries/, 'post', serverList)
-Mock.mock(/\/system\/dictionaries\/1/, 'put', empty)
-Mock.mock(/\/system\/dictionaries/, 'delete', empty)
-Mock.mock(/\/system\/dictionaries\/batch/, 'post', empty)
+Mock.mock(/\/org\/employees/, 'get', serverList)

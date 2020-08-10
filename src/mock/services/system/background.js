@@ -18,11 +18,9 @@ const serverList = (options) => {
     result.push({
       key: tmpKey,
       id: tmpKey,
-      code: 'No ' + tmpKey,
       name: 'name',
-      value: tmpKey,
-      sort: 0,
-      description: '这是一段描述'
+      startTime: Mock.mock('@datetime'),
+      endTime: Mock.mock('@datetime')
     })
   }
 
@@ -39,8 +37,8 @@ export const empty = req => {
   return builder({})
 }
 
-Mock.mock(/\/system\/dictionaries/, 'get', serverList)
-Mock.mock(/\/system\/dictionaries/, 'post', serverList)
-Mock.mock(/\/system\/dictionaries\/1/, 'put', empty)
-Mock.mock(/\/system\/dictionaries/, 'delete', empty)
-Mock.mock(/\/system\/dictionaries\/batch/, 'post', empty)
+Mock.mock(/\/system\/backgrounds/, 'get', serverList)
+Mock.mock(/\/system\/backgrounds/, 'post', serverList)
+Mock.mock(/\/system\/backgrounds\/1/, 'put', empty)
+Mock.mock(/\/system\/backgrounds/, 'delete', empty)
+Mock.mock(/\/system\/backgrounds\/batch/, 'post', empty)

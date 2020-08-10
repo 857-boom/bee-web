@@ -1,7 +1,8 @@
 const responseBody = {
-  message: '',
+  msg: '',
   timestamp: 0,
   result: null,
+  success: true,
   code: 0
 }
 

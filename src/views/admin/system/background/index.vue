@@ -1,0 +1,262 @@
+<template>
+  <page-header-wrapper>
+    <a-card :bordered="false">
+      <div class="table-page-search-wrapper">
+        <a-form layout="inline">
+          <a-row :gutter="48">
+            <a-col :md="8" :sm="24">
+              <a-form-item
+                label="生效起止日期"
+                :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+                <a-range-picker
+                  name="buildTime"
+                  style="width: 100%"
+                  v-decorator="[
+                    'buildTime',
+                    {rules: [{ required: true, message: '请选择起止日期' }]}
+                  ]" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item>
+                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+                <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
+      <div class="table-operator">
+        <a-button type="primary" icon="plus" @click="handleAdd">新建</a-button>
+        <a-dropdown v-if="selectedRowKeys.length > 0">
+          <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
+          </a-menu>
+          <a-button style="margin-left: 8px">
+            批量操作 <a-icon type="down" />
+          </a-button>
+        </a-dropdown>
+      </div>
+      <s-table
+        ref="table"
+        bordered
+        size="default"
+        rowKey="key"
+        :columns="columns"
+        :data="loadData"
+        :alert="false"
+        :rowSelection="rowSelection"
+        showPagination="auto"
+      >
+        <span slot="serial" slot-scope="text, record, index">
+          {{ index + 1 }}
+        </span>
+        <span slot="action" slot-scope="text, record">
+          <template>
+            <a @click="handleEdit(record)">编辑</a>
+            <a-divider type="vertical" />
+            <a @click="handleRemove(record)">删除</a>
+          </template>
+        </span>
+      </s-table>
+    </a-card>
+    <create-form
+      ref="createModal"
+      :visible="visible"
+      :loading="confirmLoading"
+      :model="mdl"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    />
+  </page-header-wrapper>
+</template>
+
+<script>
+import CreateForm from './modules/createForm'
+import { STable } from '@/components'
+import {
+  pageBackground,
+  removeBackground,
+  batchRemoveBackground,
+  addBackground,
+  modifyBackground
+} from '@/api/system/background'
+
+export default {
+  name: 'Background',
+  components: {
+    STable,
+    CreateForm
+  },
+  data () {
+    return {
+      // create model
+      visible: false,
+      confirmLoading: false,
+      mdl: null,
+      loading: false,
+      form: this.$form.createForm(this),
+      // 查询参数
+      queryParam: {},
+      columns: [
+        {
+          title: '#',
+          scopedSlots: { customRender: 'serial' }
+        },
+        {
+          title: '背景名称',
+          dataIndex: 'name'
+        },
+        {
+          title: '开始时间',
+          dataIndex: 'startTime'
+        },
+        {
+          title: '结束时间',
+          dataIndex: 'endTime'
+        },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          width: '150px',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      // 加载数据方法 必须为 Promise 对象
+      loadData: parameter => {
+        const requestParameters = Object.assign({}, parameter, this.queryParam)
+        console.log('loadData request parameters:', requestParameters)
+        return pageBackground(requestParameters)
+          .then(res => {
+            return res.result
+          })
+      },
+      selectedRowKeys: [],
+      selectedRows: []
+    }
+  },
+  computed: {
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedRowKeys,
+        onChange: this.onSelectChange
+      }
+    }
+  },
+  methods: {
+    refresh () {
+      this.$refs.table.refresh(true)
+    },
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
+    handleAdd () {
+      this.mdl = null
+      this.visible = true
+    },
+    handleEdit (record) {
+      this.visible = true
+      this.mdl = { ...record }
+    },
+    handleRemove (record) {
+      const _this = this
+      this.$confirm({
+        title: '警告',
+        content: `真的要删除 ${record.name} 吗?`,
+        okText: '删除',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk () {
+          removeBackground(record.id).then(res => {
+            if (res.success) {
+              // _this.refresh()
+              _this.$message.success('删除成功')
+            } else {
+              _this.$message.warning(res.msg)
+            }
+          })
+        },
+        onCancel () {
+        }
+      })
+    },
+    handleMenuClick (e) {
+      const _this = this
+      if (e.key === '1') {
+        if (!this.selectedRowKeys.length > 0) {
+          this.$message.error('请勾选要操作的数据')
+        } else {
+          this.$confirm({
+            title: '警告',
+            content: '真的要删除选中的数据吗?',
+            okText: '删除',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk () {
+              batchRemoveBackground(_this.selectedRowKeys).then(res => {
+                if (res.success) {
+                  _this.refresh()
+                  _this.$message.success('删除成功')
+                } else {
+                  _this.$message.warning(res.msg)
+                }
+              })
+            },
+            onCancel () {
+            }
+          })
+        }
+      }
+    },
+    handleOk () {
+      const form = this.$refs.createModal.form
+      this.confirmLoading = true
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          if (values.id > 0) {
+            // 修改 e.g.
+            modifyBackground(values).then(res => {
+              if (res.success) {
+                this.visible = false
+                this.confirmLoading = false
+                // 重置表单数据
+                form.resetFields()
+                // 刷新表格
+                this.refresh()
+                this.$message.success('修改成功')
+              } else {
+                this.$message.warning(res.msg)
+              }
+            })
+          } else {
+            // 新增
+            addBackground(values).then(res => {
+              if (res.success) {
+                this.visible = false
+                this.confirmLoading = false
+                // 重置表单数据
+                form.resetFields()
+                // 刷新表格
+                this.refresh()
+                this.$message.success('新增成功')
+              } else {
+                this.$message.warning(res.msg)
+              }
+            })
+          }
+        } else {
+          this.confirmLoading = false
+        }
+      })
+    },
+    handleCancel () {
+      this.visible = false
+
+      const form = this.$refs.createModal.form
+      form.resetFields()
+    }
+  }
+}
+</script>
