@@ -32,6 +32,7 @@ import {
   Tooltip,
   Alert,
   Tag,
+  Tree,
   Divider,
   DatePicker,
   TimePicker,
@@ -77,6 +78,7 @@ Vue.use(Drawer)
 Vue.use(Tooltip)
 Vue.use(Alert)
 Vue.use(Tag)
+Vue.use(Tree)
 Vue.use(Divider)
 Vue.use(DatePicker)
 Vue.use(TimePicker)

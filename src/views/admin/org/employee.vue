@@ -3,7 +3,13 @@
     <a-row :gutter="8">
       <a-col :span="4">
         <a-card :bordered="false">
-
+          <a-input-search style="margin-bottom: 8px" placeholder="Search" />
+          <a-tree
+            @select="handleSelect"
+            :treeData="orgTree"
+            :load-data="onLoadData"
+            :replaceFields="replaceFields"
+          />
         </a-card>
       </a-col>
       <a-col :span="20">
@@ -38,7 +44,6 @@
             :columns="columns"
             :data="loadData"
             :alert="false"
-            :rowSelection="rowSelection"
             showPagination="auto"
           >
             <span slot="serial" slot-scope="text, record, index">
@@ -54,6 +59,7 @@
 <script>
 import { STable } from '@/components'
 import { pageEmployee } from '@/api/org/employee'
+import { tree } from '@/api/org/department'
 
 export default {
   name: 'Employee',
@@ -64,6 +70,12 @@ export default {
     return {
       // 查询参数
       queryParam: {},
+      orgTree: [],
+      replaceFields: {
+        title: 'name',
+        key: 'id',
+        isLeaf: 'hasChildren'
+      },
       columns: [
         {
           title: '#',
@@ -87,6 +99,36 @@ export default {
             return res.result
           })
       }
+    }
+  },
+  mounted () {
+    this.getTree(0)
+  },
+  methods: {
+    handleSelect (selectedKeys, info) {
+      this.queryParam.departmentId = selectedKeys
+      this.$refs.table.refresh(true)
+    },
+    onLoadData (treeNode) {
+      const _this = this
+      return new Promise((resolve) => {
+        if (treeNode.dataRef.children) { // 有值了直接渲染
+          resolve()
+          return
+        }
+        this.getTree(treeNode.dataRef.key).then(res => {
+          treeNode.dataRef.children = res.result.data
+          _this.orgTree = [..._this.orgTree]
+        })
+        resolve()
+      })
+    },
+    getTree (parentId) {
+      tree(parentId).then(res => {
+        if (res.success) {
+          this.orgTree = res.result
+        }
+      })
     }
   }
 }

@@ -47,7 +47,7 @@ export const asyncRouterMap = [
       {
         path: '/admin/org',
         name: 'org',
-        redirect: '/admin/org/config',
+        redirect: '/admin/org/department',
         component: RouteView,
         meta: { title: '组织架构', keepAlive: true, permission: [ 'dashboard' ] },
         children: [
