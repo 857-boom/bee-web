@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
+import { SettingDrawer } from '@ant-design-vue/pro-layout'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
@@ -57,7 +57,6 @@ export default {
         // 主题 'dark' | 'light'
         theme: defaultSettings.navTheme,
         // 主色调
-        primaryColor: defaultSettings.primaryColor,
         fixedHeader: defaultSettings.fixedHeader,
         fixSiderbar: defaultSettings.fixSiderbar,
         colorWeak: defaultSettings.colorWeak,
@@ -98,12 +97,6 @@ export default {
           this.collapsed = !this.collapsed
         }, 16)
       })
-    }
-
-    // first update color
-    // TIPS: THEME COLOR HANDLER!! PLEASE CHECK THAT!!
-    if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
-      updateTheme(this.settings.primaryColor)
     }
   },
   methods: {
