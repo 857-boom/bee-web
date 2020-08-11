@@ -34,11 +34,60 @@ const serverList = (options) => {
   })
 }
 
+const applicationTree = () => {
+  return builder([
+    {
+      key: 'key-01',
+      title: '业务系统',
+      icon: 'mail',
+      children: [
+        {
+        'key': 'key-01-01-01',
+        'title': 'JAVA',
+        'icon': null
+        },
+        {
+          'key': 'key-01-01-02',
+          'title': 'PHP',
+          'icon': null
+        },
+        {
+          'key': 'key-01-01-03',
+          'title': 'Golang',
+          'icon': null
+        }
+      ]
+    },
+    {
+      key: 'key-02',
+      title: '办公系统',
+      icon: 'mail',
+      children: [
+        {
+          'key': 'key-01-01-01',
+          'title': 'JAVA',
+          'icon': null
+        },
+        {
+          'key': 'key-01-01-02',
+          'title': 'PHP',
+          'icon': null
+        },
+        {
+          'key': 'key-01-01-03',
+          'title': 'Golang',
+          'icon': null
+        }
+      ]
+    }
+  ])
+}
+
 export const empty = req => {
   return builder({})
 }
 
-Mock.mock(/\/applications/, 'get', serverList)
+Mock.mock(/\/applications/, 'get', applicationTree)
 Mock.mock(/\/applications/, 'post', serverList)
 Mock.mock(/\/applications\/1/, 'put', empty)
 Mock.mock(/\/applications/, 'delete', empty)

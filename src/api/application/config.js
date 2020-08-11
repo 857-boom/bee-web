@@ -8,6 +8,13 @@ export function pageApplication (parameter) {
   })
 }
 
+export function getApplicationTree () {
+  return request({
+    url: '/applications/tree',
+    method: 'get'
+  })
+}
+
 export function addApplication (parameter) {
   return request({
     url: '/applications',

@@ -41,6 +41,12 @@ export const asyncRouterMap = [
             name: 'config',
             component: () => import('@/views/admin/application/config'),
             meta: { title: '应用配置', keepAlive: true, permission: [ 'dashboard' ] }
+          },
+          {
+            path: '/admin/application/menu',
+            name: 'menu',
+            component: () => import('@/views/admin/application/menu'),
+            meta: { title: '菜单管理', keepAlive: true, permission: [ 'dashboard' ] }
           }
         ]
       },
