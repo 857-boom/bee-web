@@ -87,7 +87,8 @@ export const empty = req => {
   return builder({})
 }
 
-Mock.mock(/\/applications/, 'get', applicationTree)
+Mock.mock(/\/applications/, 'get', serverList)
+Mock.mock(/\/applications\/tree/, 'get', applicationTree)
 Mock.mock(/\/applications/, 'post', serverList)
 Mock.mock(/\/applications\/1/, 'put', empty)
 Mock.mock(/\/applications/, 'delete', empty)
