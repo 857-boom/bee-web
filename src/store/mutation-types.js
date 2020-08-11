@@ -2,7 +2,6 @@ export const ACCESS_TOKEN = 'Access-Token'
 
 export const SIDEBAR_TYPE = 'sidebar_type'
 export const TOGGLE_MOBILE_TYPE = 'is_mobile'
-export const TOGGLE_NAV_THEME = 'nav_theme'
 export const TOGGLE_LAYOUT = 'layout'
 export const TOGGLE_FIXED_HEADER = 'fixed_header'
 export const TOGGLE_FIXED_SIDEBAR = 'fixed_sidebar'
@@ -12,6 +11,11 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
+export const TAB_TAG = 'tag'
+export const TAB_TAG_LIST = 'tagList'
+export const TAB_TAG_REMOVE = 'removeTag'
+export const TAB_TAG_REMOVE_ALL = 'removeTagAll'
+export const TAB_TAG_REMOVE_OTHER = 'removeTagOther'
 
 export const CONTENT_WIDTH_TYPE = {
   Fluid: 'Fluid',

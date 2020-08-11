@@ -7,7 +7,7 @@ export default {
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fixed', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
   fixedHeader: true, // sticky header
-  fixSiderbar: false, // sticky siderbar
+  fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   multiTab: true,
   menu: {
@@ -16,5 +16,19 @@ export default {
   title: 'bee',
   pwa: false,
   iconfontUrl: '',
+  localStorageOptions: {
+    namespace: 'bee_', // key prefix
+    name: 'ls', // name variable Vue.[ls] or this.[$ls],
+    storage: 'local' // storage name session, local, memory
+  },
+  // 配置首页不可关闭
+  isFirstPage: false,
+  fistPage: {
+    label: '首页',
+    value: '/',
+    params: {},
+    query: {},
+    close: false
+  },
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }

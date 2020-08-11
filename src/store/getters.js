@@ -8,7 +8,8 @@ const getters = {
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,
   multiTab: state => state.app.multiTab,
-  enabled: state => state.dict.enabled
+  enabled: state => state.dict.enabled,
+  tagList: state => state.tab.tagList
 }
 
 export default getters

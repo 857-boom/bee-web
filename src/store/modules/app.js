@@ -2,7 +2,6 @@ import storage from 'store'
 import {
   SIDEBAR_TYPE,
   TOGGLE_MOBILE_TYPE,
-  TOGGLE_NAV_THEME,
   TOGGLE_LAYOUT,
   TOGGLE_FIXED_HEADER,
   TOGGLE_FIXED_SIDEBAR,
@@ -17,7 +16,6 @@ const app = {
   state: {
     sideCollapsed: false,
     isMobile: false,
-    theme: 'dark',
     layout: '',
     contentWidth: '',
     fixedHeader: false,
@@ -36,10 +34,6 @@ const app = {
     },
     [TOGGLE_MOBILE_TYPE]: (state, isMobile) => {
       state.isMobile = isMobile
-    },
-    [TOGGLE_NAV_THEME]: (state, theme) => {
-      state.theme = theme
-      storage.set(TOGGLE_NAV_THEME, theme)
     },
     [TOGGLE_LAYOUT]: (state, mode) => {
       state.layout = mode

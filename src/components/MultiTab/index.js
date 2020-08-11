@@ -8,6 +8,7 @@ const api = {
    * @param config
    */
   open: function (config) {
+    console.log(1111)
     events.$emit('open', config)
   },
   rename: function (key, name) {

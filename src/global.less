@@ -76,6 +76,33 @@ ol {
   }
 }
 
+.ant-tabs {
+  &.ant-tabs-card {
+    .ant-tabs-card-bar {
+      .ant-tabs-tab {
+        border: 0;
+        background-color: #fff;
+        color: #ccc;
+        padding: 0 20px;
+      }
+      .ant-tabs-tab-active {
+        border: 0;
+        border-bottom: 3px solid @primary-color;
+        padding-bottom: 0;
+        .anticon-close {
+          color: @primary-color;
+        }
+      }
+      .anticon-close {
+        &:hover {
+          border-radius: 20%;
+          background-color: #ccc;
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: @screen-xs) {
   .ant-table {
     width: 100%;

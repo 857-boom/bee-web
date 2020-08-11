@@ -1,6 +1,7 @@
 <script>
 import events from './events'
-
+import { mapGetters } from 'vuex'
+import { TAB_TAG, TAB_TAG_REMOVE } from '@/store/mutation-types'
 export default {
   name: 'MultiTab',
   data () {
@@ -10,6 +11,9 @@ export default {
       activeKey: '',
       newTabIndex: 0
     }
+  },
+  computed: {
+    ...mapGetters(['tag', 'tagList'])
   },
   created () {
     // bind event
@@ -33,12 +37,21 @@ export default {
       } catch (e) {
       }
     })
-
     this.pages.push(this.$route)
     this.fullPathList.push(this.$route.fullPath)
     this.selectedLastPath()
   },
   methods: {
+    findTag (value) {
+      let tag, key
+      this.tagList.map((item, index) => {
+        if (item.value === value) {
+          tag = item
+          key = index
+        }
+      })
+      return { tag: tag, key: key }
+    },
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
@@ -49,6 +62,8 @@ export default {
       if (!this.fullPathList.includes(this.activeKey)) {
         this.selectedLastPath()
       }
+      const tag = this.findTag(targetKey)
+      this.$store.commit(TAB_TAG_REMOVE, tag)
     },
     selectedLastPath () {
       this.activeKey = this.fullPathList[this.fullPathList.length - 1]
@@ -125,6 +140,13 @@ export default {
       if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
         this.fullPathList.push(newVal.fullPath)
         this.pages.push(newVal)
+
+        this.$store.commit(TAB_TAG, {
+          fullPath: this.$route.fullPath,
+          path: this.$route.path,
+          meta: this.$route.meta,
+          params: this.$route.params
+        })
       }
     },
     activeKey: function (newPathKey) {
@@ -132,13 +154,13 @@ export default {
     }
   },
   render () {
-    const { onEdit, $data: { pages } } = this
-    const panes = pages.map(page => {
+    const { onEdit } = this
+    const panes = this.tagList.map(page => {
       return (
         <a-tab-pane
           style={{ height: 0 }}
           tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
-          key={page.fullPath} closable={pages.length > 1}
+          key={page.fullPath} closable={this.tagList.length > 1}
         >
         </a-tab-pane>)
     })
