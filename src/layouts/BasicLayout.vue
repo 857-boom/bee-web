@@ -10,7 +10,6 @@
     :logo="logoRender"
     v-bind="settings"
   >
-    <setting-drawer :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
@@ -22,7 +21,6 @@
 </template>
 
 <script>
-import { SettingDrawer } from '@ant-design-vue/pro-layout'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
@@ -34,7 +32,6 @@ import LogoSvg from '../assets/logo.svg?inline'
 export default {
   name: 'BasicLayout',
   components: {
-    SettingDrawer,
     RightContent,
     GlobalFooter
   },
@@ -115,23 +112,6 @@ export default {
     },
     handleCollapse (val) {
       this.collapsed = val
-    },
-    handleSettingChange ({ type, value }) {
-      console.log('type', type, value)
-      type && (this.settings[type] = value)
-      switch (type) {
-        case 'contentWidth':
-          this.settings[type] = value
-          break
-        case 'layout':
-          if (value === 'sidemenu') {
-            this.settings.contentWidth = CONTENT_WIDTH_TYPE.Fluid
-          } else {
-            this.settings.fixSiderbar = false
-            this.settings.contentWidth = CONTENT_WIDTH_TYPE.Fixed
-          }
-          break
-      }
     },
     logoRender () {
       return <LogoSvg />
