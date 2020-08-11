@@ -4,14 +4,14 @@ export default {
   redirectUri: process.env.VUE_APP_OA_REDIRECT_URI,
   loginType: process.env.VUE_APP_OA_TYPE,
   navTheme: 'dark', // theme for nav menu
-  primaryColor: '#52C41A', // primary color of ant design
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
-  contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
+  contentWidth: 'Fixed', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
   fixedHeader: true, // sticky header
-  fixSiderbar: true, // sticky siderbar
+  fixSiderbar: false, // sticky siderbar
   colorWeak: false,
+  multiTab: true,
   menu: {
-    locale: true
+    locale: false
   },
   title: 'bee',
   pwa: false,

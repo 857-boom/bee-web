@@ -49,6 +49,9 @@ import {
   notification
 } from 'ant-design-vue'
 
+// ext library
+import MultiTab from '@/components/MultiTab'
+
 Vue.use(ConfigProvider)
 Vue.use(Layout)
 Vue.use(Input)
@@ -100,5 +103,7 @@ Vue.prototype.$info = Modal.info
 Vue.prototype.$success = Modal.success
 Vue.prototype.$error = Modal.error
 Vue.prototype.$warning = Modal.warning
+
+Vue.use(MultiTab)
 
 process.env.NODE_ENV !== 'production' && console.warn('[antd-pro] NOTICE: Antd use lazy-load.')

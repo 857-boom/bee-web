@@ -16,12 +16,14 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
+    <multi-tab v-if="multiTab"/>
     <router-view />
   </pro-layout>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { MultiTab } from '@/components'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
@@ -33,7 +35,8 @@ export default {
   name: 'BasicLayout',
   components: {
     RightContent,
-    GlobalFooter
+    GlobalFooter,
+    MultiTab
   },
   data () {
     return {
@@ -71,7 +74,8 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
+      mainMenu: state => state.permission.addRouters,
+      multiTab: (state) => state.app.multiTab
     })
   },
   created () {
