@@ -1,7 +1,7 @@
 <script>
 import events from './events'
-import { mapGetters } from 'vuex'
-import { TAB_TAG, TAB_TAG_REMOVE } from '@/store/mutation-types'
+import { mapGetters, mapState } from 'vuex'
+import { TAB_TAG, TAB_TAG_REMOVE, TAB_TAG_REMOVE_ALL, TAB_TAG_REMOVE_OTHER } from '@/store/mutation-types'
 export default {
   name: 'MultiTab',
   data () {
@@ -13,7 +13,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['tag', 'tagList'])
+    ...mapGetters(['tag', 'tagList']),
+    ...mapState({
+      tag: state => state.tab.tag
+    })
   },
   created () {
     // bind event
@@ -29,7 +32,6 @@ export default {
       }
       this.closeThat(val)
     }).$on('rename', ({ key, name }) => {
-      console.log('rename', key, name)
       try {
         const item = this.pages.find(item => item.path === key)
         item.meta.customTitle = name
@@ -37,15 +39,14 @@ export default {
       } catch (e) {
       }
     })
-    this.pages.push(this.$route)
-    this.fullPathList.push(this.$route.fullPath)
+    this.addTag(this.$route)
     this.selectedLastPath()
   },
   methods: {
     findTag (value) {
       let tag, key
       this.tagList.map((item, index) => {
-        if (item.value === value) {
+        if (item.fullPath === value) {
           tag = item
           key = index
         }
@@ -56,69 +57,45 @@ export default {
       this[action](targetKey)
     },
     remove (targetKey) {
-      this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-      this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
-      // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
-      if (!this.fullPathList.includes(this.activeKey)) {
-        this.selectedLastPath()
-      }
-      const tag = this.findTag(targetKey)
+      let { tag, key } = this.findTag(targetKey)
       this.$store.commit(TAB_TAG_REMOVE, tag)
+      if (tag.fullPath === this.tag.fullPath) {
+        // 如果关闭本标签让前推一个
+        tag = this.tagList[key === 0 ? key : key - 1]
+        this.activeKey = tag.fullPath
+      }
     },
     selectedLastPath () {
-      this.activeKey = this.fullPathList[this.fullPathList.length - 1]
+      this.activeKey = this.tag.fullPath
     },
 
     // content menu
     closeThat (e) {
-      // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
-      if (this.fullPathList.length > 1) {
-        this.remove(e)
-      } else {
-        this.$message.info('这是最后一个标签了, 无法被关闭')
-      }
+      this.remove(e)
     },
-    closeLeft (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      if (currentIndex > 0) {
-        this.fullPathList.forEach((item, index) => {
-          if (index < currentIndex) {
-            this.remove(item)
-          }
-        })
-      } else {
-        this.$message.info('左侧没有标签')
-      }
+    closeOther (e) {
+      this.$store.commit(TAB_TAG_REMOVE_OTHER)
     },
-    closeRight (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      if (currentIndex < (this.fullPathList.length - 1)) {
-        this.fullPathList.forEach((item, index) => {
-          if (index > currentIndex) {
-            this.remove(item)
-          }
-        })
-      } else {
-        this.$message.info('右侧没有标签')
-      }
-    },
+
     closeAll (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
-      this.fullPathList.forEach((item, index) => {
-        if (index !== currentIndex) {
-          this.remove(item)
-        }
-      })
+      this.$store.commit(TAB_TAG_REMOVE_ALL)
     },
     closeMenuClick (key, route) {
       this[key](route)
+    },
+    addTag (action) {
+      this.$store.commit(TAB_TAG, {
+        fullPath: action.fullPath,
+        path: action.path,
+        meta: action.meta,
+        params: action.params
+      })
     },
     renderTabPaneMenu (e) {
       return (
         <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
           <a-menu-item key="closeThat">关闭当前标签</a-menu-item>
-          <a-menu-item key="closeRight">关闭右侧</a-menu-item>
-          <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
+          <a-menu-item key="closeOther">关闭其它</a-menu-item>
           <a-menu-item key="closeAll">关闭全部</a-menu-item>
         </a-menu>
       )
@@ -136,18 +113,11 @@ export default {
   },
   watch: {
     '$route': function (newVal) {
-      this.activeKey = newVal.fullPath
-      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-        this.fullPathList.push(newVal.fullPath)
-        this.pages.push(newVal)
-
-        this.$store.commit(TAB_TAG, {
-          fullPath: this.$route.fullPath,
-          path: this.$route.path,
-          meta: this.$route.meta,
-          params: this.$route.params
-        })
-      }
+      this.addTag(newVal)
+    },
+    tag () {
+      this.activeKey = this.tag.fullPath
+      // this.$router.push({ path: this.tag.fullPath })
     },
     activeKey: function (newPathKey) {
       this.$router.push({ path: newPathKey })
@@ -159,8 +129,8 @@ export default {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
-          key={page.fullPath} closable={this.tagList.length > 1}
+          tab={this.renderTabPane(page.meta.title, page.fullPath)}
+          key={page.fullPath} closable={page.close}
         >
         </a-tab-pane>)
     })
@@ -171,10 +141,22 @@ export default {
           <a-tabs
             hideAdd
             type={'editable-card'}
-            v-model={this.activeKey}
+            v-model={ this.activeKey }
             tabBarStyle={{ background: '#FFF', margin: 0, paddingLeft: '16px', paddingTop: '1px' }}
             {...{ on: { edit: onEdit } }}>
             {panes}
+            <a-dropdown slot="tabBarExtraContent">
+              <a-menu
+                slot="overlay"
+                {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, item) } } }}
+              >
+                <a-menu-item key="close-that">关闭其它</a-menu-item>
+                <a-menu-item key="close-all">关闭所有</a-menu-item>
+              </a-menu>
+              <a-button class="nav-tab-drop" type="primary">
+                更多 <a-icon type="down"/>
+              </a-button>
+            </a-dropdown>
           </a-tabs>
         </div>
       </div>

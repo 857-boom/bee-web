@@ -24,10 +24,14 @@ export default {
   // 配置首页不可关闭
   isFirstPage: false,
   fistPage: {
-    label: '首页',
-    value: '/',
+    fullPath: '/admin/dashboard/workplace',
+    path: '/admin/dashboard/workplace',
+    meta: {
+      keepAlive: true,
+      permission: [ 'dashboard' ],
+      title: '首页'
+    },
     params: {},
-    query: {},
     close: false
   },
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
