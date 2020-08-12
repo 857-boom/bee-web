@@ -1,72 +1,70 @@
 <template>
-  <page-header-wrapper>
-    <a-card :bordered="false">
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="应用名称">
-                <a-input v-model="queryParam.name" placeholder=""/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item>
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
-      <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="handleAdd">新建</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
-          <a-menu slot="overlay" @click="handleMenuClick">
-            <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
-          </a-menu>
-          <a-button style="margin-left: 8px">
-            批量操作 <a-icon type="down" />
-          </a-button>
-        </a-dropdown>
-      </div>
-      <s-table
-        ref="table"
-        bordered
-        size="default"
-        rowKey="key"
-        :columns="columns"
-        :data="loadData"
-        :alert="false"
-        :rowSelection="rowSelection"
-        showPagination="auto"
-      >
-        <span slot="serial" slot-scope="text, record, index">
-          {{ index + 1 }}
-        </span>
-        <span slot="type" slot-scope="text">
-          {{ text }}
-        </span>
-        <span slot="enabled" slot-scope="text">
-          <a-badge :status="text | enabledTypeFilter" :text="text | enabledFilter" />
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <a @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical" />
-            <a @click="handleRemove(record)">删除</a>
-          </template>
-        </span>
-      </s-table>
-      <create-form
-        ref="createModal"
-        :visible="visible"
-        :loading="confirmLoading"
-        :model="mdl"
-        @cancel="handleCancel"
-        @ok="handleOk"
-      />
-    </a-card>
-  </page-header-wrapper>
+  <a-card :bordered="false">
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="应用名称">
+              <a-input v-model="queryParam.name" placeholder=""/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item>
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+    <div class="table-operator">
+      <a-button type="primary" icon="plus" @click="handleAdd">新建</a-button>
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-menu slot="overlay" @click="handleMenuClick">
+          <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
+        </a-menu>
+        <a-button style="margin-left: 8px">
+          批量操作 <a-icon type="down" />
+        </a-button>
+      </a-dropdown>
+    </div>
+    <s-table
+      ref="table"
+      bordered
+      size="default"
+      rowKey="key"
+      :columns="columns"
+      :data="loadData"
+      :alert="false"
+      :rowSelection="rowSelection"
+      showPagination="auto"
+    >
+      <span slot="serial" slot-scope="text, record, index">
+        {{ index + 1 }}
+      </span>
+      <span slot="type" slot-scope="text">
+        {{ text }}
+      </span>
+      <span slot="enabled" slot-scope="text">
+        <a-badge :status="text | enabledTypeFilter" :text="text | enabledFilter" />
+      </span>
+      <span slot="action" slot-scope="text, record">
+        <template>
+          <a @click="handleEdit(record)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="handleRemove(record)">删除</a>
+        </template>
+      </span>
+    </s-table>
+    <create-form
+      ref="createModal"
+      :visible="visible"
+      :loading="confirmLoading"
+      :model="mdl"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    />
+  </a-card>
 </template>
 
 <script>
