@@ -33,7 +33,8 @@ const serverList = (options) => {
     result.push({
       key: tmpKey,
       id: tmpKey,
-      name: 'name'
+      name: 'name',
+      enabled: Mock.mock('@integer(0, 1)')
     })
   }
 

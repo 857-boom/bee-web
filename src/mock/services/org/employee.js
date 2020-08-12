@@ -19,7 +19,8 @@ const serverList = (options) => {
       key: tmpKey,
       id: tmpKey,
       name: 'name',
-      jobNumber: 'jobNumber'
+      jobNumber: 'jobNumber',
+      enabled: Mock.mock('@integer(0, 1)')
     })
   }
 

@@ -43,6 +43,9 @@
           <span slot="serial" slot-scope="text, record, index">
             {{ index + 1 }}
           </span>
+          <span slot="enabled" slot-scope="text">
+            <a-badge :status="text | enabledTypeFilter" :text="text | enabledFilter" />
+          </span>
         </s-table>
       </a-card>
     </a-col>
@@ -76,6 +79,11 @@ export default {
         {
           title: '部门名称',
           dataIndex: 'name'
+        },
+        {
+          title: '是否生效',
+          dataIndex: 'enabled',
+          scopedSlots: { customRender: 'enabled' }
         }
       ],
       // 加载数据方法 必须为 Promise 对象
