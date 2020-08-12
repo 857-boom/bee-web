@@ -17,7 +17,10 @@
       <global-footer />
     </template>
     <multi-tab class="nav-tab" v-if="multiTab"/>
-    <router-view />
+    <router-view v-if="multiTab"/>
+    <page-header-wrapper v-else>
+      <router-view />
+    </page-header-wrapper>
   </pro-layout>
 </template>
 
