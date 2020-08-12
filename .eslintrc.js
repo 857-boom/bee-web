@@ -50,7 +50,7 @@ module.exports = {
     ],
     'no-delete-var': 2,
     'prefer-const': [
-      2,
+      0,
       {
         'ignoreReadBeforeAssign': false
       }
