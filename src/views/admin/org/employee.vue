@@ -35,6 +35,9 @@
             </a-row>
           </a-form>
         </div>
+        <div class="table-operator">
+          <a-button type="default" icon="sync">重置密码</a-button>
+        </div>
         <s-table
           ref="table"
           bordered
@@ -43,6 +46,7 @@
           :columns="columns"
           :data="loadData"
           :alert="false"
+          :rowSelection="rowSelection"
           showPagination="auto"
         >
           <span slot="serial" slot-scope="text, record, index">
@@ -104,13 +108,27 @@ export default {
           .then(res => {
             return res.result
           })
-      }
+      },
+      selectedRowKeys: [],
+      selectedRows: []
     }
   },
   mounted () {
     this.getTree(0)
   },
+  computed: {
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedRowKeys,
+        onChange: this.onSelectChange
+      }
+    }
+  },
   methods: {
+    onSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
     handleSelect (selectedKeys, info) {
       this.queryParam.departmentId = selectedKeys
       this.$refs.table.refresh(true)
