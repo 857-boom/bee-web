@@ -36,7 +36,7 @@
           </a-form>
         </div>
         <div class="table-operator">
-          <a-button type="default" icon="sync">重置密码</a-button>
+          <a-button type="default" icon="sync" @click="handleResetPwd">重置密码</a-button>
         </div>
         <s-table
           ref="table"
@@ -63,7 +63,7 @@
 
 <script>
 import { STable } from '@/components'
-import { pageEmployee } from '@/api/org/employee'
+import { pageEmployee, resetPwd } from '@/api/org/employee'
 import { tree } from '@/api/org/department'
 
 export default {
@@ -125,6 +125,9 @@ export default {
     }
   },
   methods: {
+    refresh () {
+      this.$refs.table.refresh(true)
+    },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -153,6 +156,32 @@ export default {
           this.orgTree = res.result
         }
       })
+    },
+    handleResetPwd () {
+      const _this = this
+      if (!this.selectedRowKeys.length > 0) {
+        this.$message.error('请选择至少一条数据')
+      } else {
+        this.$confirm({
+          title: '警告',
+          content: '确定将选择账号密码重置为?',
+          okText: '确定',
+          okType: 'danger',
+          cancelText: '取消',
+          onOk () {
+            resetPwd(_this.selectedRowKeys).then(res => {
+              if (res.success) {
+                _this.refresh()
+                _this.$message.success('重置密码成功')
+              } else {
+                _this.$message.warning(res.msg)
+              }
+            })
+          },
+          onCancel () {
+          }
+        })
+      }
     }
   }
 }

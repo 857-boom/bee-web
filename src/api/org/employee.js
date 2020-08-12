@@ -7,3 +7,11 @@ export function pageEmployee (parameter) {
     params: parameter
   })
 }
+
+export function resetPwd (parameter) {
+  return request({
+    url: '/org/employees/pwd/reset',
+    method: 'put',
+    data: parameter
+  })
+}

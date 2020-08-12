@@ -38,3 +38,4 @@ export const empty = req => {
 }
 
 Mock.mock(/\/org\/employees/, 'get', serverList)
+Mock.mock(/\/org\/employees\/pwd\/reset/, 'put', empty)
