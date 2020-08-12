@@ -12,6 +12,7 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   require('./services/user')
   require('./services/system/dictionary')
   require('./services/system/background')
+  require('./services/system/param')
   require('./services/application/config')
   require('./services/application/menu')
   require('./services/application/role')

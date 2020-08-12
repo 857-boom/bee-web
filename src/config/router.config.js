@@ -91,6 +91,12 @@ export const asyncRouterMap = [
             meta: { title: '数据字典', keepAlive: true, permission: [ 'dashboard' ] }
           },
           {
+            path: '/admin/system/param',
+            name: 'param',
+            component: () => import('@/views/admin/system/param'),
+            meta: { title: '系统参数', keepAlive: true, permission: [ 'dashboard' ] }
+          },
+          {
             path: '/admin/system/background',
             name: 'background',
             component: () => import('@/views/admin/system/background/index'),
