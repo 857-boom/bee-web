@@ -150,8 +150,8 @@ export default {
                 slot="overlay"
                 {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, item) } } }}
               >
-                <a-menu-item key="close-that">关闭其它</a-menu-item>
-                <a-menu-item key="close-all">关闭所有</a-menu-item>
+                <a-menu-item key="closeOther">关闭其它</a-menu-item>
+                <a-menu-item key="closeAll">关闭所有</a-menu-item>
               </a-menu>
               <a-button class="nav-tab-drop" type="primary">
                 更多 <a-icon type="down"/>
