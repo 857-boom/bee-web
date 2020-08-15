@@ -13,7 +13,7 @@ export default {
   menu: {
     locale: false
   },
-  title: 'bee',
+  title: '统一登录平台',
   pwa: false,
   iconfontUrl: '',
   localStorageOptions: {
