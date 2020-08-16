@@ -66,15 +66,3 @@ export function logout () {
     }
   })
 }
-
-/**
- * get user 2step code open?
- * @param parameter {*}
- */
-export function get2step (parameter) {
-  return request({
-    url: userApi.twoStepCode,
-    method: 'post',
-    data: parameter
-  })
-}

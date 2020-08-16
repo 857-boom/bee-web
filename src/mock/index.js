@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   console.log('mock mounting')
   const Mock = require('mockjs2')
   require('./services/user')
+  require('./services/auth')
   require('./services/system/dictionary')
   require('./services/system/background')
   require('./services/system/param')

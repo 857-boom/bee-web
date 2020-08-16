@@ -19,7 +19,13 @@
       </a-input-password>
     </a-form-item>
     <a-form-item>
-      <a-button type="primary" html-type="submit" size="large" block>
+      <a-button
+        type="primary"
+        html-type="submit"
+        size="large"
+        block
+        :loading="state.loginBtn"
+        :disabled="state.loginBtn">
         登录
       </a-button>
     </a-form-item>
@@ -27,20 +33,36 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Password',
   data () {
     return {
       form: this.$form.createForm(this, { name: 'login_form' }),
-      switched: false
+      switched: false,
+      state: {
+        time: 60,
+        loginBtn: false
+      }
     }
   },
   methods: {
+    ...mapActions(['Login']),
     handleSubmit (e) {
       e.preventDefault()
+      const {
+        state,
+        Login
+      } = this
+      state.loginBtn = true
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          Login(values).then(res => {
+            this.$router.push({ path: '/' })
+          })
+            .finally(() => {
+              state.loginBtn = false
+            })
         }
       })
     }
